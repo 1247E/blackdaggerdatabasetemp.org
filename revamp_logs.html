@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Incident Logs - Facility Database</title>
+  <style>
+    :root {
+      --bg-dark: #0e0e10;
+      --bg-panel: #1a1a1d;
+      --bg-accent: #23232b;
+      --text-light: #f0f0f0;
+      --text-accent: #6cb4ff;
+      --border-glow: #6cb4ff88;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, var(--bg-dark), #1a1a1a);
+      color: var(--text-light);
+    }
+
+    header {
+      background: linear-gradient(to right, #121212, #1e1e1e);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      color: #fff;
+      text-shadow: 0 0 5px var(--border-glow);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      background-color: var(--bg-accent);
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    nav a {
+      color: var(--text-accent);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 2px;
+      background: var(--text-accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--text-accent);
+      padding-bottom: 10px;
+      text-align: left;
+    }
+
+    .incident-log {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .incident-box {
+      background: var(--bg-panel);
+      padding: 20px;
+      border-left: 4px solid var(--text-accent);
+      border-radius: 8px;
+      box-shadow: 0 0 8px #00000066;
+      transition: all 0.25s ease;
+    }
+
+    .incident-box:hover {
+      transform: scale(1.01);
+      box-shadow: 0 0 12px var(--border-glow);
+    }
+
+    .incident-box h3 {
+      margin-top: 0;
+      color: var(--text-accent);
+    }
+
+    .incident-meta {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+
+    .incident-summary {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-top: 1px solid #333;
+      margin-top: 50px;
+    }
+
+        .account-widget {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      z-index: 10;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-panel);
+      padding: 8px 12px;
+      border: 1px solid var(--border-glow);
+      border-radius: 6px;
+      box-shadow: 0 0 10px #00000066;
+      transition: background 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+
+    .user-info:hover {
+      background: var(--bg-accent);
+    }
+
+    .user-info img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      display: none;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      border-radius: 6px;
+      padding: 10px 14px;
+      box-shadow: 0 0 15px #00000088;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-top: 5px;
+      z-index: 1;
+      min-width: 200px;
+    }
+
+    .account-widget:hover .dropdown {
+      display: block;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Facility-03 "Black Dagger" Database</h1>
+  <div class="account-widget">
+    <div class="user-info">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/user.png" alt="User Icon" />
+      <span>Public User</span>
+    </div>
+    <div class="dropdown">
+      <p><strong>Clearance Level:</strong> 3</p>
+      <p><strong>Status:</strong> Logged in anonymously</p>
+      <p><strong>Session ID:</strong> #F03-47329</p>
+      <p><strong>Clearance Key:</strong> qfrtyusjxadcjhbaweszxdfcgvhbj</p>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <a href="revamp.html">Home</a>
+  <a href="revamp_anomalies.html">Anomalies</a>
+  <a href="revamp_personnel.html">Personnel</a>
+  <a href="revamp_logs.html">Logs</a>
+  <a href="revamp_net.html">NAAD-Net</a>
+  <a href="#">Placeholder</a>
+</nav>
+
+<div class="container">
+  <h2 class="section-title">Incident Logs</h2>
+  <p style="margin-bottom: 40px; font-size: 1.1rem; color: #ccc;">
+    Below you'll find a collection of recent logs of the site.
+  </p>
+  
+  <div class="incident-log">
+
+
+<div class="incident-box">
+  <h3>Incident 772-M1</h3>
+  <div class="incident-meta">
+    <strong>Date:</strong> 1984-04-25 &nbsp;|&nbsp; <strong>Related Anomaly:</strong> AN-772
+  </div>
+  <div class="incident-summary">
+    <strong>Personnel on Site:</strong> Col. William, two other privates.<br>
+    <strong>Test:</strong> AN-772<br>
+    <strong>Notes:</strong> We have a breach of AN-772 again, as well hostage situation which uhm failed due to my drastic action of throwing in a flash bang and the histager just something out of nowhere managing to open doors while seeing nothing, hearing nothinng except that piep sound whatever… Everything went right as of now.
+  </div>
+</div>
+
+<div class="incident-box">
+  <h3>Incident 772-M2</h3>
+  <div class="incident-meta">
+    <strong>Date:</strong> 1984-04-22 &nbsp;|&nbsp; <strong>Related Anomaly:</strong> AN-772
+  </div>
+  <div class="incident-summary">
+    <strong>Personnel on Site:</strong> Dr. Hart, Dr. Miliason<br>
+    <strong>Test:</strong> AN-772<br>
+    <strong>Notes:</strong> Dr. Miliason violated containment protocol by initiating an unauthorized interview with AN-772, which immediately led to a containment breach. A maintenance check is scheduled for the room’s lighting systems. It has been confirmed that AN-772 emits a cold aura and is vulnerable to conventional firearms.
+  </div>
+</div>
+
+<div class="incident-box">
+  <h3>Incident 772-M3</h3>
+  <div class="incident-meta">
+    <strong>Date:</strong> 1984-04-25 &nbsp;|&nbsp; <strong>Related Anomaly:</strong> AN-772
+  </div>
+  <div class="incident-summary">
+    <strong>Personnel on Site:</strong> Dr. Hart<br>
+    <strong>Test:</strong> None<br>
+    <strong>Notes:</strong> AN-772 reportedly breached containment again. Two maintenance staff members received "nuggets" from the entity and are under surveillance by MTS. AN-772 has been frequently observed throughout the site while supposedly still in containment. Priority has shifted to organizing sightings and securing the entity in its physical form. A scheduled test for AN-1025 was cancelled due to repeated breaches. Additional note: "We also need an actual internship system please Eduard."
+  </div>
+</div>
+
+
+    <!-- More incidents here -->
+    
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2025 F-03 Database — Contact: @axilonis, @wicketderework
+</div>
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anomalies - Facility Database</title>
+  <style>
+    :root {
+      --bg-dark: #0e0e10;
+      --bg-panel: #1a1a1d;
+      --bg-accent: #23232b;
+      --text-light: #f0f0f0;
+      --text-accent: #6cb4ff;
+      --border-glow: #6cb4ff88;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, var(--bg-dark), #1a1a1a);
+      color: var(--text-light);
+    }
+
+    header {
+      background: linear-gradient(to right, #121212, #1e1e1e);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      color: #fff;
+      text-shadow: 0 0 5px var(--border-glow);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      background-color: var(--bg-accent);
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    nav a {
+      color: var(--text-accent);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 2px;
+      background: var(--text-accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      border-bottom: 2px solid var(--text-accent);
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+    }
+
+    .anomaly-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .anomaly-list li {
+      background: var(--bg-panel);
+      padding: 18px 20px;
+      border-left: 4px solid var(--text-accent);
+      border-radius: 6px;
+      margin-bottom: 15px;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px #00000055;
+    }
+
+    .anomaly-list li:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px var(--border-glow);
+    }
+
+    .anomaly-list a {
+      color: var(--text-accent);
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-top: 1px solid #333;
+      margin-top: 50px;
+    }
+
+    .account-widget {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      z-index: 10;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-panel);
+      padding: 8px 12px;
+      border: 1px solid var(--border-glow);
+      border-radius: 6px;
+      box-shadow: 0 0 10px #00000066;
+      transition: background 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+
+    .user-info:hover {
+      background: var(--bg-accent);
+    }
+
+    .user-info img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      display: none;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      border-radius: 6px;
+      padding: 10px 14px;
+      box-shadow: 0 0 15px #00000088;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-top: 5px;
+      z-index: 1;
+      min-width: 200px;
+    }
+
+    .account-widget:hover .dropdown {
+      display: block;
+    }
+
+.anomaly-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding: 20px 20px;
+  max-width: 1500px;  /* limits width */
+  margin: 0 auto;    /* centers it */
+}
+
+.anomaly-card {
+  background: var(--bg-panel);
+  border-left: 4px solid var(--text-accent);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 0 18px #00000044;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.anomaly-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px var(--border-glow);
+}
+
+.anomaly-card h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: var(--text-accent);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.anomaly-card iframe {
+  width: 100%;
+  height: 700px; /* slightly smaller than before */
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-accent);
+  margin-bottom: 10px;
+  padding-right: 10px;
+}
+
+.toggle-wrapper h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  flex-grow: 1;
+  color: var(--text-accent);
+}
+
+.toggle-arrow {
+  transition: transform 0.3s ease;
+  font-size: 1.3rem;
+}
+
+.anomaly-card.open .toggle-arrow {
+  transform: rotate(90deg);
+}
+
+.anomaly-content {
+  display: none;
+  margin-top: 15px;
+}
+
+.anomaly-card.open .anomaly-content {
+  display: block;
+}
+
+  </style>
+</head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cards = document.querySelectorAll(".anomaly-card");
+
+    cards.forEach(card => {
+      const toggle = card.querySelector(".toggle-wrapper");
+
+      toggle.addEventListener("click", function () {
+        card.classList.toggle("open");
+      });
+    });
+  });
+</script>
+
+<body>
+
+<header>
+  <h1>Facility-03 "Black Dagger" Database</h1>
+  <div class="account-widget">
+    <div class="user-info">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/user.png" alt="User Icon" />
+      <span>Public User</span>
+    </div>
+    <div class="dropdown">
+      <p><strong>Clearance Level:</strong> 3</p>
+      <p><strong>Status:</strong> Logged in anonymously</p>
+      <p><strong>Session ID:</strong> #F03-47329</p>
+      <p><strong>Clearance Key:</strong> qfrtyusjxadcjhbaweszxdfcgvhbj</p>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <a href="revamp.html">Home</a>
+  <a href="revamp_anomalies.html">Anomalies</a>
+  <a href="revamp_personnel.html">Personnel</a>
+  <a href="revamp_logs.html">Logs</a>
+  <a href="revamp_net.html">NAAD-Net</a>
+  <a href="#">Placeholder</a>
+</nav>
+
+<div class="container">
+  <h2 class="section-title">Anomaly Files</h2>
+  <p style="margin-bottom: 40px; font-size: 1.1rem; color: #ccc;">
+    Below you'll find all documented anomalies. Canon entries follow the standardized format, while legacy files are retained for archival purposes.
+  </p>
+
+  <!-- Canon Entries -->
+  <section>
+    <h2 style="color: var(--text-accent); margin-bottom: 20px;">Current Canon Entries</h2>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-5673</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1DzjIUtItbRBtsrwVDowiGeXwly7al-euJQfPIJdc2aw/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-233</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1bgS1ujqJtFvebCXBvxHg6EgCjlhH2K05UrgiduovGGs/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-311</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1TwioNfIbXD1v21IFM9zYsPRWkPIBTfOG4uv4FMxX-bI/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-312</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/13WAYe_UWYpr4Bc0qwvBNJrcWfGioXIzYAWzuvDddNXY/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-772</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1C6ExtulHoci_dQtr5hzdmvDQBCNhHP61rzJtMJSgAfA/edit" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legacy Entries -->
+  <section style="margin-top: 80px;">
+    <h3 style="color: #999; margin-bottom: 20px;">Legacy Entries (Not-Canon)</h3>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-166</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/12VybqqF3xk2DanUEfqWNz_ztWKaKMWZp0GFiPKzV3p4/edit" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-027</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1d9pePwGj_qnTRgbTVn2Xy4RD10NyVH2eIP4IzNHhoOI/edit?usp=drivesdk" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>SCP-049</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1bS1zI0Ol5IKXQCp8vlohgJRv6rT-dxao/edit?usp=sharing&ouid=101609366160739451702&rtpof=true&sd=true" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-006</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/17w2AvvWGPkdepn8uZ_lYpf1tkRuU5smAquuFNqTtebM/edit?usp=drivesdk" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-584</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1hLHrfHHu7S9qTZw-z80II65Pt4fk4MbqNs6yLJyQYKc/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-139</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1Mtl-c6WYKndowz5cANh11dgKrj_AQ2-E_EJ63U2bUfo/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="anomaly-grid">
+      <div class="anomaly-card">
+        <div class="toggle-wrapper">
+          <h3>AN-821</h3>
+          <span class="toggle-arrow">▶</span>
+        </div>
+        <div class="anomaly-content">
+          <iframe src="https://docs.google.com/document/d/1nYEpV533yCREmKI-sem4Z95Ti0A-myCx4Cfef6ZElpM/edit?usp=sharing" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+
+<div class="footer">
+  &copy; 2025 F-03 Database — Contact: @axilonis, @wicketderework
+</div>
+
+</body>
+</html>
